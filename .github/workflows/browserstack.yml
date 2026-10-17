@@ -11,6 +11,13 @@ jobs:
   mobile-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout repository
@@ -68,3 +75,18 @@ jobs:
             allure-report/
           if-no-files-found: ignore
           retention-days: 14
+
+      - name: Configure GitHub Pages
+        if: always() && hashFiles('allure-report/index.html') != ''
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        if: always() && hashFiles('allure-report/index.html') != ''
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: allure-report/
+
+      - name: Deploy to GitHub Pages
+        if: always() && hashFiles('allure-report/index.html') != ''
+        id: deployment
+        uses: actions/deploy-pages@v4
