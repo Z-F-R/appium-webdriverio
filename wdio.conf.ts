@@ -33,10 +33,10 @@ export const config: WebdriverIO.Config = {
             ? {
                 platformName: 'Android',
                 'appium:automationName': 'UiAutomator2',
-                'appium:deviceName': 'Samsung Galaxy S22',
-                'appium:platformVersion': '12.0',
                 'appium:app': appUrl,
                 'bstack:options': {
+                    deviceName: 'Samsung Galaxy S22',
+                    platformVersion: '12.0',
                     projectName: 'Appium WebdriverIO',
                     buildName: 'Mobile Notes Tests',
                     sessionName: 'Notes app test suite',
