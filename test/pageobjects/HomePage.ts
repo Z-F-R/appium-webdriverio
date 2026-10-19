@@ -1,5 +1,4 @@
-
-import { $ } from '@wdio/globals'
+import { $, $$ } from '@wdio/globals'
 
 class HomePage {
     get addNoteButton() {
@@ -12,6 +11,10 @@ class HomePage {
 
     get noteTitle() {
         return $('id:com.s17labs.notesapp:id/noteTitle')
+    }
+
+    get noteTitles() {
+        return $$('id:com.s17labs.notesapp:id/noteTitle')
     }
 
     get noteText() {
