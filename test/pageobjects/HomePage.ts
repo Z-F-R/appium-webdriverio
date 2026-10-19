@@ -51,8 +51,9 @@ class HomePage {
         await NotesListPage.searchNotes(query)
     }
 
-    async openNote() {
-        await this.noteTitle.click()
+    async openNote(title: string) {
+        const noteTitle = await NotesListPage.getNoteByTitle(title)
+        await noteTitle.click()
     }
 
     async clearSearch() {

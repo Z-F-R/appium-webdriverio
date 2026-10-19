@@ -39,6 +39,10 @@ class NoteEditorPage {
         await this.editButton.click()
     }
 
+    async exitEditMode() {
+        await this.backButton.click()
+    }
+
     async returnToHome() {
         await this.backButton.click()
     }
