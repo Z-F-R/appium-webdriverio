@@ -1,4 +1,5 @@
-import { $, $$ } from '@wdio/globals'
+import { $ } from '@wdio/globals'
+import NotesListPage from './NotesListPage'
 
 class HomePage {
     get addNoteButton() {
@@ -6,27 +7,27 @@ class HomePage {
     }
 
     get searchInput() {
-        return $('id:com.s17labs.notesapp:id/searchEditText')
+        return NotesListPage.searchInput
     }
 
     get noteTitle() {
-        return $('id:com.s17labs.notesapp:id/noteTitle')
+        return NotesListPage.noteTitle
     }
 
     get noteTitles() {
-        return $$('id:com.s17labs.notesapp:id/noteTitle')
+        return NotesListPage.noteTitles
     }
 
     get noteText() {
-        return $('id:com.s17labs.notesapp:id/noteText')
+        return NotesListPage.noteText
     }
 
     get clearSearchButton() {
-        return $('id:com.s17labs.notesapp:id/clearButton')
+        return NotesListPage.clearSearchButton
     }
 
     get emptyView() {
-        return $('id:com.s17labs.notesapp:id/emptyView')
+        return NotesListPage.emptyView
     }
 
     get menuButton() {
@@ -46,16 +47,15 @@ class HomePage {
     }
 
     async searchNotes(query: string) {
-        await this.searchInput.setValue(query)
+        await NotesListPage.searchNotes(query)
     }
-
 
     async openNote() {
         await this.noteTitle.click()
     }
 
     async clearSearch() {
-        await this.clearSearchButton.click()
+        await NotesListPage.clearSearch()
     }
 
     async openPinnedNotes() {
