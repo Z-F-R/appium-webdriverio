@@ -1,11 +1,7 @@
-
 name: BrowserStack Mobile Tests
 
 on:
   workflow_dispatch:
-
-permissions:
-  contents: read
 
 jobs:
   mobile-tests:
