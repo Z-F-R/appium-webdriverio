@@ -1,28 +1,30 @@
-import { $, $$ } from '@wdio/globals'
+import { byId, allById } from '../helpers/locators'
+
 
 class NotesListPage {
     get searchInput() {
-        return $('id:com.s17labs.notesapp:id/searchEditText')
+        return byId('searchEditText')
     }
 
     get noteTitle() {
-        return $('id:com.s17labs.notesapp:id/noteTitle')
+        return byId('noteTitle')
     }
 
     get noteTitles() {
-        return $$('id:com.s17labs.notesapp:id/noteTitle')
+        return allById('noteTitle')
     }
 
+
     get noteText() {
-        return $('id:com.s17labs.notesapp:id/noteText')
+        return byId('noteText')
     }
 
     get clearSearchButton() {
-        return $('id:com.s17labs.notesapp:id/clearButton')
+        return byId('clearButton')
     }
 
     get emptyView() {
-        return $('id:com.s17labs.notesapp:id/emptyView')
+        return byId('emptyView')
     }
 
     async searchNotes(query: string) {

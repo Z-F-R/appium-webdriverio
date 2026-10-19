@@ -1,9 +1,9 @@
-import { $ } from '@wdio/globals'
+import { byId } from '../helpers/locators'
 import NotesListPage from './NotesListPage'
 
 class PinnedNotesPage {
     get title() {
-        return $('id:com.s17labs.notesapp:id/toolbarTitle')
+        return byId('toolbarTitle')
     }
 
     get searchInput() {

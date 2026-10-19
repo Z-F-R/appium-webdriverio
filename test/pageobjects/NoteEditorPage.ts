@@ -1,25 +1,25 @@
-
 import { $ } from '@wdio/globals'
+import { byId } from '../helpers/locators'
 
 class NoteEditorPage {
     get titleInput() {
-        return $('id:com.s17labs.notesapp:id/titleEditText')
+        return byId('titleEditText')
     }
 
     get noteInput() {
-        return $('id:com.s17labs.notesapp:id/noteEditText')
+        return byId('noteEditText')
     }
 
     get backButton() {
-        return $('id:com.s17labs.notesapp:id/backButton')
+        return byId('backButton')
     }
 
     get editButton() {
-        return $('id:com.s17labs.notesapp:id/editButton')
+        return byId('editButton')
     }
 
     get moreButton() {
-        return $('id:com.s17labs.notesapp:id/moreButton')
+        return byId('moreButton')
     }
 
     get deleteOption() {
@@ -27,7 +27,7 @@ class NoteEditorPage {
     }
 
     get pinButton() {
-        return $('id:com.s17labs.notesapp:id/pinButton')
+        return byId('pinButton')
     }
 
     async fillNote(title: string, text: string) {

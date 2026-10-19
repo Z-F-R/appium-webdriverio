@@ -1,4 +1,5 @@
 import { $ } from '@wdio/globals'
+import { byId, appResourceId } from '../helpers/locators'
 import NotesListPage from './NotesListPage'
 
 class HomePage {
@@ -31,15 +32,15 @@ class HomePage {
     }
 
     get menuButton() {
-        return $('id:com.s17labs.notesapp:id/menuButton')
+        return byId('menuButton')
     }
 
     get pinnedMenuItem() {
-        return $('android=new UiSelector().resourceId("com.s17labs.notesapp:id/design_menu_item_text").text("Pinned")')
+        return $(`android=new UiSelector().resourceId("${appResourceId('design_menu_item_text')}").text("Pinned")`)
     }
 
     get notesMenuItem() {
-        return $('android=new UiSelector().resourceId("com.s17labs.notesapp:id/design_menu_item_text").text("Notes")')
+        return $(`android=new UiSelector().resourceId("${appResourceId('design_menu_item_text')}").text("Notes")`)
     }
 
     async openNewNote() {
