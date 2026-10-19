@@ -1,4 +1,5 @@
 import { $ } from '@wdio/globals'
+import NotesListPage from './NotesListPage'
 
 class PinnedNotesPage {
     get title() {
@@ -6,23 +7,23 @@ class PinnedNotesPage {
     }
 
     get searchInput() {
-        return $('id:com.s17labs.notesapp:id/searchEditText')
+        return NotesListPage.searchInput
     }
 
     get noteTitle() {
-        return $('id:com.s17labs.notesapp:id/noteTitle')
+        return NotesListPage.noteTitle
     }
 
     get clearSearchButton() {
-        return $('id:com.s17labs.notesapp:id/clearButton')
+        return NotesListPage.clearSearchButton
     }
 
     async searchNotes(query: string) {
-        await this.searchInput.setValue(query)
+        await NotesListPage.searchNotes(query)
     }
 
     async clearSearch() {
-        await this.clearSearchButton.click()
+        await NotesListPage.clearSearch()
     }
 }
 
