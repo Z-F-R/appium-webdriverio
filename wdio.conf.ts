@@ -13,6 +13,8 @@ if (isBrowserStack && (!username || !accessKey || !appUrl)) {
     )
 }
 
+let failedTests = 0
+
 export const config: WebdriverIO.Config = {
     runner: 'local',
     tsConfigPath: './tsconfig.json',
@@ -38,7 +40,7 @@ export const config: WebdriverIO.Config = {
                     deviceName: 'Samsung Galaxy S22',
                     platformVersion: '12.0',
                     projectName: 'Appium WebdriverIO',
-                    buildName: 'Mobile Notes Tests',
+                    buildName: `Mobile Notes Tests - Run ${process.env.GITHUB_RUN_NUMBER ?? 'local'}`,
                     sessionName: 'Notes app test suite',
                 },
             }
@@ -83,8 +85,28 @@ export const config: WebdriverIO.Config = {
         timeout: 60000,
     },
 
+    after: async function () {
+        if (!isBrowserStack) {
+            return
+        }
+
+        const status = failedTests === 0 ? 'passed' : 'failed'
+        const reason = failedTests === 0
+            ? 'All tests passed'
+            : `${failedTests} test(s) failed`
+
+        await browser.execute(
+            `browserstack_executor: ${JSON.stringify({
+                action: 'setSessionStatus',
+                arguments: { status, reason },
+            })}`
+        )
+    },
+
     afterTest: async function (_test, _context, { error }) {
         if (error) {
+            failedTests++
+
             const screenshot = await browser.takeScreenshot()
             allure.addAttachment(
                 'Screenshot on failure',
