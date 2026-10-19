@@ -46,8 +46,9 @@ export const config: WebdriverIO.Config = {
                 platformName: 'Android',
                 'appium:automationName': 'UiAutomator2',
                 'appium:deviceName': 'Android Emulator',
-                'appium:udid': 'emulator-5554',
-                'appium:platformVersion': '17',
+                'appium:udid': process.env.ANDROID_UDID ?? 'emulator-5554',
+                'appium:platformVersion':
+                    process.env.ANDROID_PLATFORM_VERSION ?? '17',
                 'appium:app': resolve(
                     process.cwd(),
                     'apps',
@@ -60,12 +61,12 @@ export const config: WebdriverIO.Config = {
             },
     ],
 
-    logLevel: 'info',
+    logLevel: 'warn',
     waitforTimeout: 10000,
     connectionRetryTimeout: 120000,
     connectionRetryCount: 1,
 
-    services: [],
+    services: isBrowserStack ? [] : ['appium'],
 
     framework: 'mocha',
     reporters: [
