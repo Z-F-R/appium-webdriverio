@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run TypeScript type check
+        run: npm run typecheck
+
       - name: Upload APK to BrowserStack
         id: upload-app
         env:
