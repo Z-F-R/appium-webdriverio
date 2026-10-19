@@ -1,11 +1,9 @@
 # Mobile App Automation — WebdriverIO + Appium
 
-Automated UI tests for a native Android Notes application using **WebdriverIO, Appium 3, TypeScript, and Mocha**. The project supports local Android emulator execution and cloud-based testing with BrowserStack App Automate, with automated test reporting through Allure and GitHub Actions.
-
-[![BrowserStack Tests](https://img.shields.io/badge/BrowserStack-App_Automate-00A67E?logo=browserstack)](https://github.com/Z-F-R/appium-webdriverio/actions/workflows/browserstack.yml)
+[![BrowserStack Mobile Tests](https://github.com/Z-F-R/appium-webdriverio/actions/workflows/browserstack.yml/badge.svg)](https://github.com/Z-F-R/appium-webdriverio/actions/workflows/browserstack.yml)
 [![Allure Report](https://img.shields.io/badge/Allure-View_Report-8A2BE2?logo=allure)](https://z-f-r.github.io/appium-webdriverio/)
 
-**[View Latest Allure Test Report](https://z-f-r.github.io/appium-webdriverio/)** · **[GitHub Actions Workflows](https://github.com/Z-F-R/appium-webdriverio/actions)**
+Automated UI tests for a native Android Notes application using **WebdriverIO 10, Appium 3, TypeScript, and Mocha**. The project supports local Android emulator execution and cloud-based testing with BrowserStack App Automate. Allure generates test reports, and GitHub Actions runs the cloud test suite and publishes the report to GitHub Pages.
 
 ## Tech Stack
 
@@ -15,12 +13,12 @@ Automated UI tests for a native Android Notes application using **WebdriverIO, A
 - **TypeScript** — test implementation
 - **Mocha** — test runner
 - **Allure Report** — test reporting
-- **GitHub Actions** — CI workflow
 - **BrowserStack App Automate** — cloud device testing
+- **GitHub Actions** — CI workflow and report deployment
 
 ## Test Coverage
 
-The test suite covers five core user flows in the Notes application:
+The test suite covers five core user flows:
 
 - Create and save a note
 - Search for a note
@@ -32,7 +30,8 @@ The test suite covers five core user flows in the Notes application:
 
 For local execution:
 
-- Node.js and npm
+- Node.js 24 or compatible version
+- npm
 - Java JDK
 - Android SDK and Android Emulator
 - Appium 3 with the UiAutomator2 driver
@@ -52,17 +51,17 @@ cd appium-webdriverio
 npm ci
 ```
 
-### 3. Start the Android emulator and Appium server
+### 3. Start the Android emulator
 
-Start an Android emulator, then launch Appium in a terminal:
+Start an Android emulator and make sure it is available through ADB:
 
 ```bash
-appium
+adb devices
 ```
 
-The project uses the Android Notes APK included in the `apps/` directory.
+The project includes the application APK at `apps/Notes_com_s17labs_notesapp_1_0_5.apk`.
 
-### 4. Run the tests
+### 4. Run the tests locally
 
 Run the full test suite:
 
@@ -76,9 +75,15 @@ Run the specific test spec:
 npm run test:spec
 ```
 
+Run TypeScript validation:
+
+```bash
+npm run typecheck
+```
+
 ## Allure Reports
 
-Generate a local Allure report after test execution:
+Generate a local report after test execution:
 
 ```bash
 npm run allure:report
@@ -90,48 +95,74 @@ Open the generated report:
 npm run allure:open
 ```
 
-The latest published report is also available online:
+The latest published report is available at [GitHub Pages](https://z-f-r.github.io/appium-webdriverio/).
 
-**[Open Allure Report](https://z-f-r.github.io/appium-webdriverio/)**
+The published report may be replaced by a subsequent workflow run.
 
 ## BrowserStack and CI
 
-The project supports running mobile tests on BrowserStack App Automate through GitHub Actions.
+The project supports cloud testing through BrowserStack App Automate.
 
-To trigger a cloud test run:
+### Run tests through GitHub Actions
 
-1. Open [GitHub Actions](https://github.com/Z-F-R/appium-webdriverio/actions/workflows/browserstack.yml).
-2. Select **BrowserStack Mobile Tests**.
-3. Click **Run workflow**.
+1. Open [BrowserStack Mobile Tests](https://github.com/Z-F-R/appium-webdriverio/actions/workflows/browserstack.yml).
+2. Select **Run workflow**.
+3. Start the workflow on the desired branch.
 
-The workflow uploads the Android APK to BrowserStack, executes the test suite on a cloud Android device, generates an Allure report, and publishes the report to GitHub Pages.
+The workflow uploads the Android APK to BrowserStack, runs the tests on a cloud Android device, generates an Allure report, saves report artifacts, and publishes the report to GitHub Pages.
 
-The workflow requires the following GitHub Actions repository secrets:
+The following repository secrets must be configured in **Settings → Secrets and variables → Actions**:
 
 - `BROWSERSTACK_USERNAME`
 - `BROWSERSTACK_ACCESS_KEY`
 
-The published Allure report represents the latest successfully published report and may be replaced by a subsequent workflow run.
+### Run tests against BrowserStack locally
+
+A local BrowserStack run requires these environment variables:
+
+- `TEST_ENV=browserstack`
+- `BROWSERSTACK_USERNAME`
+- `BROWSERSTACK_ACCESS_KEY`
+- `BROWSERSTACK_APP_URL`
+
+`BROWSERSTACK_APP_URL` must contain a valid BrowserStack app URL, usually starting with `bs://`. Upload the APK to BrowserStack first if you do not already have an app URL.
+
+For PowerShell, set the variables in the current terminal session before running the tests:
+
+```powershell
+$env:TEST_ENV = "browserstack"
+$env:BROWSERSTACK_USERNAME = "your_username"
+$env:BROWSERSTACK_ACCESS_KEY = "your_access_key"
+$env:BROWSERSTACK_APP_URL = "bs://your_app_id"
+npm test
+```
+
+Do not commit real credentials or app-specific secrets to the repository.
 
 ## Application Under Test
 
-The project automates a native Android Notes application. Its APK is included in the repository under `apps/`.
+The project automates a native Android Notes application. Its APK is stored in the repository under `apps/`.
 
 ## Project Structure
 
 ```text
 appium-webdriverio/
-├── apps/                  # Android application APK
+├── apps/                    # Android application APK
 ├── test/
-│   ├── pageobjects/       # Page Object classes
-│   └── specs/             # Test specifications
+│   ├── helpers/             # Shared test helpers
+│   ├── pageobjects/         # Page Object classes
+│   └── specs/               # Test specifications
 ├── .github/
-│   └── workflows/         # GitHub Actions workflows
-├── wdio.conf.ts           # WebdriverIO configuration
+│   └── workflows/           # GitHub Actions workflows
+├── .env.example             # Environment variable template
+├── .gitignore
 ├── package.json
+├── package-lock.json
+├── tsconfig.json
+├── wdio.conf.ts
 └── README.md
 ```
 
 ## Author
 
-**[Z-F-R](https://github.com/Z-F-R)**
+[Z-F-R](https://github.com/Z-F-R)
